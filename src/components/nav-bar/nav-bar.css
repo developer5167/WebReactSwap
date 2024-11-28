@@ -1,0 +1,30 @@
+.main {
+  margin: 20px;
+}
+nav {
+  margin: 0 -10px 0 -10px !important;
+}
+.carouselImage {
+  height: 250px;
+}
+img {
+  border-radius: 10px;
+}
+h2 {
+  font-size: smaller;
+}
+.CircularAvatar {
+  margin-left: 5px;
+  border-color: black;
+  border-radius: 50%;
+  width: 35px;
+  margin-right: 5px;
+  height: 35px;
+}
+
+.CircularAvatar:hover {
+  cursor: pointer;
+}
+.loginBtn {
+  margin-right: 50px;
+}

@@ -1,0 +1,33 @@
+/* styles.css */
+
+/* Circle for color options */
+.color-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.color-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+.more-images {
+  margin-top: 20px;
+  width: 100%;
+  white-space: nowrap;
+  overflow-x: scroll;
+}
+.images {
+  padding: 5px;
+  border-radius: 0px;
+  width: 150px;
+}
+.more-images :hover {
+  cursor: pointer;
+}
+a:active {
+  .images {
+    border: 1px solid;
+  }
+}
