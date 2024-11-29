@@ -1,22 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import "../login/login.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useUserViewModel } from '../../services/viewModel'
 import LoadingSpinner from "../spinner-loading/spinner-loading";
 import ShowCustomAlert from "../alert-messages/alert-message";
 import { Fade } from "react-bootstrap";
 export default function Signup() {
 
-  const { loading, error, createUser, data } = useUserViewModel();
-  console.log(data)
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [mobile, setMobile] = useState("");
+  const [showAlerts, setShowAlert] = useState(false);
 
+
+  const { loading, error, createUser, data } = useUserViewModel();
+
+
+
+
+
+  const navigate = useNavigate();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    var in_eleman = document.getElementById('input_email');
+    var in_password = document.getElementById('input_password');
+    var cpassword = document.getElementById('input_cpassword');
+    var in_mobile = document.getElementById('input_mobile');
+    var email = (in_eleman as HTMLInputElement).value;
+    var password = (in_password as HTMLInputElement).value;
+    var confirmPassword = (cpassword as HTMLInputElement).value;
+    var mobile = (in_mobile as HTMLInputElement).value;
+
+    console.log(email, password, confirmPassword, mobile)
+
+
     if (email != '' && (password == confirmPassword) && mobile) {
 
       let fullEmail = email.split('@');
@@ -31,21 +45,27 @@ export default function Signup() {
       console.log(request);
       try {
         await createUser('/createUserWithEmaiPassword', request)
+        if (data == "User already exists" || "User Created Successfuly") {
+          setShowAlert(true)
+        } else {
+          setShowAlert(false)
+        }
       }
       catch {
         console.log('Failed');
-
+        setShowAlert(true);
       }
     }
-   
+
   }
 
-  const cancelButtonClick = () => {
+  const cancelButtonClick = (e: any) => {
     console.log("cancelButtonClicked")
   }
-  const okayButtonClick = () => {
-    console.log("okayButtonClicked") 
+  const okayButtonClick = (e: any) => {
+    console.log("okayButtonClicked")
   }
+
   return (
     <section className="h-100 gradient-form" style={{ "backgroundColor": "#fff" }}>
       <div className="container py-5 h-100">
@@ -70,44 +90,41 @@ export default function Signup() {
                       <div data-mdb-input-init className="form-outline mb-3">
                         <input
                           type="email"
-                          id="form2Example11"
+                          id="input_email"
                           className="form-control"
                           placeholder="Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+
                           required
                         />
                       </div>
                       <div data-mdb-input-init className="form-outline mb-3">
                         <input
                           type="password"
-                          id="form2Example22"
+                          id="input_password"
                           placeholder="Password"
                           className="form-control"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+
                           required
                         />
                       </div>
                       <div data-mdb-input-init className="form-outline mb-3">
                         <input
                           type="password"
-                          id="form2Example22"
+                          id="input_cpassword"
                           placeholder="Confirm Password"
                           className="form-control"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
+
+
                           required
                         />
                       </div>
                       <div data-mdb-input-init className="form-outline mb-3">
                         <input
                           type="number"
-                          id="form2Example22"
+                          id="input_mobile"
                           placeholder="Mobile"
                           className="form-control"
-                          value={mobile}
-                          onChange={(e) => setMobile(e.target.value)}
+
                           required
                         />
                       </div>
@@ -123,7 +140,7 @@ export default function Signup() {
                         </button>
                       </div>
                       {loading ? <LoadingSpinner /> : null}
-                      {data=="User already exists" ? <ShowCustomAlert message={data} variant={"danger"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick} />:data=="User Created Successfully"?<ShowCustomAlert message={data} variant={"success"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick}/>:null}
+                      {!error ? <ShowCustomAlert message={data} variant={data == "User already exists" ? "danger" : "success"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick} showAlert={showAlerts} setShowAlert={setShowAlert} /> : <p>some thing went wrong</p>}
                       <div className="d-flex align-items-center justify-content-center pb-4">
                         <p className="mb-0 me-2">Already have an account?</p>
                         <button
