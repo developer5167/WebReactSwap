@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useUserViewModel } from '../../services/viewModel'
 import LoadingSpinner from "../spinner-loading/spinner-loading";
 import ShowCustomAlert from "../alert-messages/alert-message";
+import { Fade } from "react-bootstrap";
 export default function Signup() {
 
   const { loading, error, createUser, data } = useUserViewModel();
@@ -43,7 +44,7 @@ export default function Signup() {
     console.log("cancelButtonClicked")
   }
   const okayButtonClick = () => {
-    console.log("okayButtonClicked")
+    console.log("okayButtonClicked") 
   }
   return (
     <section className="h-100 gradient-form" style={{ "backgroundColor": "#fff" }}>
@@ -122,7 +123,7 @@ export default function Signup() {
                         </button>
                       </div>
                       {loading ? <LoadingSpinner /> : null}
-                      {error ? <ShowCustomAlert message={data} variant={"danger"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick} /> : <ShowCustomAlert message={error} variant={"success"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick} />}
+                      {data=="User already exists" ? <ShowCustomAlert message={data} variant={"danger"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick} />:data=="User Created Successfully"?<ShowCustomAlert message={data} variant={"success"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick}/>:null}
                       <div className="d-flex align-items-center justify-content-center pb-4">
                         <p className="mb-0 me-2">Already have an account?</p>
                         <button

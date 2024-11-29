@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Alert, Button } from "react-bootstrap";
 
-export default function ShowCustomAlert ({ message, variant, showCancelButton, showOkButton, cancelBtn,okayButton }: any) {
-  const [showAlert, setShow] = useState(false)
+export default function ShowCustomAlert({ message, variant, showCancelButton, showOkButton, cancelBtn, okayButton }: any) {
 
+
+const [showAlert,setShowAlert]=useState(true);
   const cancelButtonClick = (e: any) => {
     cancelBtn()
   }
   const okayButtonClick = (e: any) => {
-    setShow(false)
+    setShowAlert(false)
     okayButton();
   }
   return (
