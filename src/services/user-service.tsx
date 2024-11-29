@@ -7,8 +7,6 @@ const axiosInstance = axios.create({
       "Content-Type": "application/json",
     },
 });
-
-
 export const addUser = async(endPoint:any,data:any)=>{ debugger
     try {
         const response = await axiosInstance.post(endPoint, data);
