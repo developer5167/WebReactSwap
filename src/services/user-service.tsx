@@ -16,3 +16,13 @@ export const addUser = async(endPoint:any,data:any)=>{
         throw error;
       }
 }
+
+export const loginUserApi = async(endPoint:any,data:any)=>{ 
+  try {
+      const response = await axiosInstance.post(endPoint, data);
+      return response.data;
+    } catch (error) {
+      console.error("API Error: ", error);
+      throw error;
+    }
+}

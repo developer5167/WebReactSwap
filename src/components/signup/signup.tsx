@@ -32,9 +32,7 @@ export default function Signup() {
 
 
     if (email != '' && (password == confirmPassword) && mobile) {
-
       let fullEmail = email.split('@');
-
       let request = {
         email: email,
         password: password,
@@ -133,7 +131,7 @@ export default function Signup() {
                         <button
                           data-mdb-button-init
                           data-mdb-ripple-init
-                          className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                          className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-2"
                           type="submit"
                         >
                           Sign Up
@@ -141,8 +139,8 @@ export default function Signup() {
                       </div>
                       {loading ? <LoadingSpinner /> : null}
                       {!error ? <ShowCustomAlert message={data} variant={data == "User already exists" ? "danger" : "success"} showCancelButton={false} showOkButton={true} cancelBtn={cancelButtonClick} okayButton={okayButtonClick} showAlert={showAlerts} setShowAlert={setShowAlert} /> : <p>some thing went wrong</p>}
-                      <div className="d-flex align-items-center justify-content-center pb-4">
-                        <p className="mb-0 me-2">Already have an account?</p>
+                      <div className="d-flex align-items-center justify-content-center">
+                        <p className="mb-0 me-1">Already have an account?</p>
                         <button
                           onClick={() => {
                             navigate("/login");

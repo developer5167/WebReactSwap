@@ -1,11 +1,61 @@
 import "../login/login.css";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { loginUserApi } from "../../services/user-service";
+import { useState } from "react";
+import LoadingSpinner from "../spinner-loading/spinner-loading";
 export default function Login() {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState('');
+  const [error, setError] = useState(null);
+
+
   const navigate = useNavigate();
   function buttonClick() {
     navigate("/signup");
   }
-  function loginClick() {}
+  const loginClick = async () => {
+
+    var email = document.getElementById("input_email")
+    var email_value = (email as HTMLInputElement).value;
+
+    var password = document.getElementById("input_password")
+    var password_value = (password as HTMLInputElement).value;
+
+    if ((email_value == null || email_value == "") || (password_value == null || password_value == "")) {
+      console.log("please enter valid credentials")
+      return;
+    }
+    let loginRequest = {
+      email: email_value,
+      password: password_value
+    }
+    setLoading(true)
+    try {
+      var loginData = await loginUserApi("/login", loginRequest)
+      if (loginData["user_id"] != undefined) {
+        setData(`User login successfull ${loginData["user_id"]}`)
+        Cookies.set("user", JSON.stringify(loginData), { expires: 10 });
+        localStorage.removeItem("user")
+        var localStorageData = Cookies.get("user")
+
+        if (localStorageData) {
+          console.log(JSON.parse(localStorageData))
+          navigate("/dashboard");
+        }
+      } else {
+        setData(loginData["message"])
+
+      }
+      console.log(loginData)
+      setLoading(false)
+    } catch (e) {
+      console.log(e)
+      setData(loginData["message"])
+      setLoading(false)
+    }
+
+  }
 
   return (
     <section className="h-100 gradient-form" style={{ "backgroundColor": "#fff" }}>
@@ -31,7 +81,7 @@ export default function Login() {
                       <div data-mdb-input-init className="form-outline mb-3">
                         <input
                           type="email"
-                          id="form2Example11"
+                          id="input_email"
                           className="form-control"
                           placeholder="email address"
                         />
@@ -39,12 +89,12 @@ export default function Login() {
                       <div data-mdb-input-init className="form-outline mb-3">
                         <input
                           type="password"
-                          id="form2Example22"
+                          id="input_password"
                           placeholder="password"
                           className="form-control"
                         />
                       </div>
-
+                      {loading ? <LoadingSpinner /> : null}
                       <div className="text-center pt-1 mb-5 pb-1">
                         <button
                           data-mdb-button-init
@@ -56,6 +106,7 @@ export default function Login() {
                           Log in
                         </button>
                         <br></br>
+                        <p>{data}</p>
                         <a
                           className="text-muted forgotpassword"
                           onClick={() => {

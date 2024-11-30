@@ -12,6 +12,7 @@ import {
 import Home from "./components/home/home";
 import Products from "./components/products/products";
 import Forgotpassword from "./components/forgot-password/forgot-password";
+import Dashboard from "./components/dashboard/dashboard";
 
 function AppRoutes() {
   const routes = useRoutes([
@@ -20,6 +21,7 @@ function AppRoutes() {
     { path: "/signup", element: <Signup /> },
     { path: "/explore", element: <Products /> },
     { path: "/forgotpassword", element: <Forgotpassword /> },
+    { path: "/dashboard", element: <Dashboard /> },
   ]);
   return routes;
 }
