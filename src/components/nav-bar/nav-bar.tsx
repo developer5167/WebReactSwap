@@ -4,12 +4,39 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Cookies from "js-cookie";
+import { useAuth } from "../../../src/GlobalState";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../services/user-service";
 
 export default function NavBar() {
+  const navigate = useNavigate();
+  const { isLoggedIn, logOut }: any = useAuth();
+
+  const logOutFun = async () => {
+    const { email }: any = Cookies.get("user");
+    const data = {
+      email: email,
+    };
+    if (isLoggedIn) {
+      logOut();
+        Cookies.remove("user");
+        navigate("/login");
+      // const loginUserApi = await logoutUser("logout", data);
+      // if (loginUserApi["message"] = "Logout Successful") {
+      //   logOut();
+      //   Cookies.remove("user");
+      //   navigate("/login");
+      // }
+    } else {
+      navigate("/login"); // Navigate to login
+    }
+  };
+
   return (
     <div
       className="main"
-      style={{ backgroundColor: "#ecebeb", margin: "0px", padding: "10px" }}
+      style={{ backgroundColor: "white", margin: "0px", padding: "10px" }}
     >
       <Navbar expand="lg">
         <Container fluid>
@@ -34,9 +61,15 @@ export default function NavBar() {
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/explore">Explore</Nav.Link>
             </Nav>
-            <Nav.Link className="loginBtn" href="/login">
-              Login
-            </Nav.Link>
+            {isLoggedIn ? (
+              <Nav.Link className="loginBtn" onClick={logOutFun}>
+                Log Out
+              </Nav.Link>
+            ) : (
+              <Nav.Link className="loginBtn" href="/login">
+                Login
+              </Nav.Link>
+            )}
 
             <Form className="d-flex">
               <Form.Control

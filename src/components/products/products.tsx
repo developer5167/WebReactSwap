@@ -172,7 +172,7 @@ function Products() {
 
   return (
     <div className="main">
-      <h5 className="">Headphones For You !</h5>
+      <h5 className="">Trending post near you</h5>
       <div className="col-12 row">
         {ProductsList.map((item, index) => (
           <div className="col-3" key={item.id}>

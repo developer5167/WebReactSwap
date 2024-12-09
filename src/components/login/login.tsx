@@ -2,63 +2,69 @@ import "../login/login.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { loginUserApi } from "../../services/user-service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "../spinner-loading/spinner-loading";
+import { useAuth } from "../../GlobalState";
+
 export default function Login() {
+  
+  const { login ,isLoggedIn}: any = useAuth();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState('');
-  const [error, setError] = useState(null);
-
-
+  const [data, setData] = useState("");
   const navigate = useNavigate();
+
+ 
   function buttonClick() {
     navigate("/signup");
   }
-  const loginClick = async () => {
-
-    var email = document.getElementById("input_email")
+  const loginClick = async (e: any) => {
+    var email = document.getElementById("input_email");
     var email_value = (email as HTMLInputElement).value;
 
-    var password = document.getElementById("input_password")
+    var password = document.getElementById("input_password");
     var password_value = (password as HTMLInputElement).value;
 
-    if ((email_value == null || email_value == "") || (password_value == null || password_value == "")) {
-      console.log("please enter valid credentials")
+    if (
+      email_value == null ||
+      email_value == "" ||
+      password_value == null ||
+      password_value == ""
+    ) {
+      console.log("please enter valid credentials");
       return;
     }
     let loginRequest = {
       email: email_value,
-      password: password_value
-    }
-    setLoading(true)
+      password: password_value,
+    };
+    setLoading(true);
     try {
-      var loginData = await loginUserApi("/login", loginRequest)
+      var loginData = await loginUserApi("/login", loginRequest);
       if (loginData["user_id"] != undefined) {
-        setData(`User login successfull ${loginData["user_id"]}`)
+        setData(`User login successfull ${loginData["user_id"]}`);
         Cookies.set("user", JSON.stringify(loginData), { expires: 10 });
-        localStorage.removeItem("user")
-        var localStorageData = Cookies.get("user")
-
-        if (localStorageData) {
-          console.log(JSON.parse(localStorageData))
-          navigate("/dashboard");
-        }
       } else {
-        setData(loginData["message"])
-
+        setData(loginData["message"]);
       }
-      console.log(loginData)
-      setLoading(false)
+      console.log(loginData);
+      setLoading(false);
     } catch (e) {
-      console.log(e)
-      setData(loginData["message"])
-      setLoading(false)
+      console.log(e);
+      setData(loginData["message"]);
+      setLoading(false);
     }
-
-  }
+    var localStorageData = Cookies.get("user");
+    if (localStorageData) {
+      login();
+      navigate("/dashboard");
+    }
+  };
 
   return (
-    <section className="h-100 gradient-form" style={{ "backgroundColor": "#fff" }}>
+    <section
+      className="h-100 gradient-form"
+      style={{ backgroundColor: "#fff" }}
+    >
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-xl-10">
